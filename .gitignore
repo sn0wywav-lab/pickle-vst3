@@ -1,0 +1,32 @@
+# Build directories
+build/
+cmake-build-*/
+
+# VST3 SDK submodule (uncomment if you want to ignore submodule contents)
+# vst3sdk/
+
+# Compiled plugin files
+*.vst3
+*.dll
+*.so
+*.dylib
+
+# IDE files
+.vscode/
+*.vcxproj*
+*.sln
+*.xcodeproj/
+*.xcworkspace/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# CMake files
+CMakeCache.txt
+CMakeFiles/
+cmake_install.cmake
+Makefile
+
+# Logs
+*.log

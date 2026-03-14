@@ -1,0 +1,33 @@
+#include <windows.h>
+#include "version_info.h"
+
+// Version information
+1 VERSIONINFO
+FILEVERSION PICKLE_FILE_VERSION
+PRODUCTVERSION PICKLE_FILE_VERSION
+FILEOS VOS_NT_WINDOWS32
+FILETYPE VFT_APP
+{
+    BLOCK "StringFileInfo"
+    {
+        BLOCK "040904E4"
+        {
+            VALUE "CompanyName", PICKLE_AUTHOR
+            VALUE "FileDescription", "PICKLE VST3 Plugin Installer"
+            VALUE "FileVersion", PICKLE_VERSION_STRING
+            VALUE "InternalName", "install"
+            VALUE "LegalCopyright", "Copyright (C) 2024 Pickle Audio"
+            VALUE "OriginalFilename", "install.exe"
+            VALUE "ProductName", PICKLE_NAME
+            VALUE "ProductVersion", PICKLE_VERSION_STRING
+        }
+    }
+    
+    BLOCK "VarFileInfo"
+    {
+        VALUE "Translation", 0x409, 1252
+    }
+}
+
+// Application icon (if available)
+// 1 ICON "pickle_icon.ico"

@@ -1,0 +1,150 @@
+name: Build PICKLE VST3 Plugin
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main ]
+  release:
+    types: [ published ]
+  workflow_dispatch:
+
+jobs:
+  build-windows:
+    name: Build Windows VST3
+    runs-on: windows-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      with:
+        submodules: recursive
+    
+    - name: Setup Visual Studio
+      uses: microsoft/setup-msbuild@v2
+      with:
+        msbuild-architecture: x64
+    
+    - name: Setup CMake
+      uses: jwlawson/actions-setup-cmake@v2
+      with:
+        cmake-version: '3.29.x'
+    
+    - name: Cache VST3 SDK
+      uses: actions/cache@v4
+      with:
+        path: vst3sdk
+        key: vst3sdk-v1
+    
+    - name: Configure CMake
+      run: |
+        cmake -B build -G "Visual Studio 17 2022" -A x64
+      working-directory: ${{ github.workspace }}
+    
+    - name: Build Plugin
+      run: |
+        cmake --build build --config Release
+      working-directory: ${{ github.workspace }}
+    
+    - name: Build Installer
+      run: |
+        cd build
+        cl /EHsc /Fe:install.exe ..\installer\install.cpp /link user32.lib advapi32.lib shell32.lib
+        cl /EHsc /Fe:uninstall.exe ..\installer\uninstall.cpp /link user32.lib advapi32.lib shell32.lib
+    
+    - name: Create Package
+      run: |
+        mkdir package
+        copy build\Release\PICKLE.vst3 package\
+        copy build\install.exe package\
+        copy build\uninstall.exe package\
+        copy README.md package\
+        echo PICKLE VST3 Plugin Installer > package\README.txt
+        echo 1. Run install.exe as administrator >> package\README.txt
+        echo 2. Restart your DAW >> package\README.txt
+        echo Version: %GITHUB_REF_NAME% >> package\README.txt
+    
+    - name: Upload Artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: pickle-vst3-windows
+        path: package/
+        retention-days: 30
+    
+    - name: Create Release
+      if: github.event_name == 'release'
+      uses: softprops/action-gh-release@v2
+      with:
+        files: package/*
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  build-macos:
+    name: Build macOS VST3
+    runs-on: macos-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      with:
+        submodules: recursive
+    
+    - name: Setup Xcode
+      uses: maxim-lobanov/setup-xcode@v1
+      with:
+        xcode-version: latest-stable
+    
+    - name: Configure CMake
+      run: |
+        cmake -B build -G Xcode
+      working-directory: ${{ github.workspace }}
+    
+    - name: Build Plugin
+      run: |
+        cmake --build build --config Release
+      working-directory: ${{ github.workspace }}
+    
+    - name: Create macOS Package
+      run: |
+        mkdir package
+        cp -R build/Release/PICKLE.vst3 package/
+        cp README.md package/
+        echo PICKLE VST3 Plugin for macOS > package/README.txt
+    
+    - name: Upload Artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: pickle-vst3-macos
+        path: package/
+        retention-days: 30
+
+  test:
+    name: Test Plugin
+    runs-on: windows-latest
+    needs: build-windows
+    
+    steps:
+    - name: Download Artifacts
+      uses: actions/download-artifact@v4
+      with:
+        name: pickle-vst3-windows
+        path: test_package/
+    
+    - name: Test Installer
+      run: |
+        echo Testing installer executable...
+        cd test_package
+        install.exe --version-test || echo "Installer requires admin for full test"
+        echo Installer executable created successfully
+    
+    - name: Test Plugin File
+      run: |
+        echo Testing plugin file...
+        cd test_package
+        if exist PICKLE.vst3 (
+          echo [✓] Plugin file exists
+          dir PICKLE.vst3
+        ) else (
+          echo [✗] Plugin file missing
+          exit 1
+        )

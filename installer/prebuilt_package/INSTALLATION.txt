@@ -1,0 +1,16 @@
+# PICKLE VST3 - Installation Guide 
+ 
+## Why Can't We Build in Windsurf? 
+Windsurf is an editor, not a build environment. It lacks: 
+- C++ compiler (Visual Studio) 
+- CMake build system 
+- Windows SDK 
+- VST3 SDK build tools 
+ 
+## Solutions: 
+1. Install Visual Studio 2022 Community (free) 
+2. Install CMake (free) 
+3. Run the build scripts provided 
+ 
+## Alternative: Use GitHub Actions 
+Push to GitHub and it will build automatically! 
