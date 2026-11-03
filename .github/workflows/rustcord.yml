@@ -1,0 +1,86 @@
+name: Rustcord
+
+on:
+  push:
+    paths:
+      - "rustcord/**"
+      - ".github/workflows/rustcord.yml"
+  pull_request:
+    paths:
+      - "rustcord/**"
+      - ".github/workflows/rustcord.yml"
+  workflow_dispatch:
+
+env:
+  CARGO_TERM_COLOR: always
+  CMAKE_POLICY_VERSION_MINIMUM: "3.5"
+
+defaults:
+  run:
+    working-directory: rustcord
+
+jobs:
+  test:
+    name: Test + clippy (Linux)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          components: clippy
+      - uses: Swatinem/rust-cache@v2
+        with:
+          workspaces: rustcord
+      - name: System libraries
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends cmake clang pkg-config nasm \
+            libasound2-dev libv4l-dev libxkbcommon-dev libwayland-dev libgl-dev \
+            libpipewire-0.3-dev libspa-0.2-dev libxcb1-dev libxcb-randr0-dev libxcb-shm0-dev libdbus-1-dev libgbm-dev libegl-dev
+      - run: cargo clippy --workspace --all-targets -- -D warnings
+      - run: cargo test --workspace
+
+  build:
+    name: Release build (${{ matrix.os }})
+    needs: test
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: windows-latest
+            bin: rustcord.exe
+          - os: ubuntu-latest
+            bin: rustcord
+          - os: macos-latest
+            bin: rustcord
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+      - uses: Swatinem/rust-cache@v2
+        with:
+          workspaces: rustcord
+      - name: System libraries (Linux)
+        if: runner.os == 'Linux'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends cmake clang pkg-config nasm \
+            libasound2-dev libv4l-dev libxkbcommon-dev libwayland-dev libgl-dev \
+            libpipewire-0.3-dev libspa-0.2-dev libxcb1-dev libxcb-randr0-dev libxcb-shm0-dev libdbus-1-dev libgbm-dev libegl-dev
+      - name: CMake (macOS)
+        if: runner.os == 'macOS'
+        run: brew list cmake >/dev/null 2>&1 || brew install cmake
+      - run: cargo build --release -p rustcord-app
+      - name: Package
+        shell: bash
+        run: |
+          mkdir -p dist/themes dist/plugins
+          cp target/release/${{ matrix.bin }} dist/
+          cp README.md dist/
+          cp examples/themes/* dist/themes/
+          cp examples/plugins/* dist/plugins/
+      - uses: actions/upload-artifact@v4
+        with:
+          name: rustcord-${{ runner.os }}
+          path: rustcord/dist/
+          retention-days: 30

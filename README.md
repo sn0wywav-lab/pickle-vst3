@@ -2,9 +2,9 @@
 
 A sleek, pickle-themed audio effect plugin that adds unique character to your audio tracks.
 
-## Also in this repository: Pickle client
+## Also in this repository: Rustcord
 
-[`pickle-client/`](pickle-client/) is a fast native Rust client for Discord with unlocked voice quality (up to 600 kb/s stereo Opus, selectable 8–48 kHz, no audio filters), uncapped camera quality, and support for BetterDiscord/Vencord themes and plugins. See [`pickle-client/README.md`](pickle-client/README.md).
+[`rustcord/`](rustcord/) is Rustcord, a fast native Rust client for Discord. It has unlocked voice quality (up to 600 kb/s stereo Opus, 8–48 kHz, no audio filters), uncapped camera and Go Live stream quality, and support for BetterDiscord/Vencord themes and plugins. See [`rustcord/README.md`](rustcord/README.md).
 
 ## 🎨 UI Design
 

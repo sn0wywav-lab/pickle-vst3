@@ -1,0 +1,30 @@
+/**
+ * @name Daylight
+ * @author Rustcord
+ * @version 1.0.0
+ * @description A light theme.
+ */
+:root {
+  --rustcord-light: 1;
+  --background-primary: #ffffff;
+  --background-secondary: #f5f2f0;
+  --background-secondary-alt: #ece7e4;
+  --background-tertiary: #e4ddd9;
+  --background-floating: #ffffff;
+  --channeltextarea-background: #eee9e6;
+  --background-modifier-hover: rgba(60, 40, 30, 0.06);
+  --background-modifier-selected: rgba(194, 65, 12, 0.13);
+  --text-normal: #24201e;
+  --text-muted: #6f645e;
+  --header-primary: #140f0d;
+  --header-secondary: #4a403b;
+  --interactive-normal: #5a4f49;
+  --interactive-hover: #24201e;
+  --interactive-active: #000000;
+  --interactive-muted: #c2b8b2;
+  --text-link: #0068c9;
+  --brand-experiment: #c2410c;
+  --status-danger: #d92d2d;
+  --status-positive: #1f8f4a;
+  --status-warning: #b77900;
+}

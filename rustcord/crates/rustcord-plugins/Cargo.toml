@@ -1,0 +1,14 @@
+[package]
+name = "rustcord-plugins"
+description = "Sandboxed JavaScript plugin host (BetterDiscord / Vencord compatible APIs)"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+
+[dependencies]
+rquickjs = { version = "0.14", features = ["loader"] }
+serde.workspace = true
+serde_json.workspace = true
+parking_lot.workspace = true
+crossbeam-channel.workspace = true
+tracing.workspace = true

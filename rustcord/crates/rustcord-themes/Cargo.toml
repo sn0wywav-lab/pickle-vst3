@@ -1,0 +1,8 @@
+[package]
+name = "rustcord-themes"
+description = "BetterDiscord / Vencord CSS theme loader for the Rustcord client"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+
+[dependencies]

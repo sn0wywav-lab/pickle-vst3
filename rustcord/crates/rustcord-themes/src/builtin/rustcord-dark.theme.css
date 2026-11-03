@@ -1,0 +1,31 @@
+/**
+ * @name Rustcord Dark
+ * @author Rustcord
+ * @version 1.0.0
+ * @description Default theme. Warm charcoal with an oxidised rust-orange accent.
+ */
+:root {
+  --background-primary: #1d1b1a;
+  --background-secondary: #171514;
+  --background-secondary-alt: #121110;
+  --background-tertiary: #0e0d0c;
+  --background-floating: #0b0a0a;
+  --channeltextarea-background: #282422;
+  --background-modifier-hover: rgba(232, 108, 52, 0.08);
+  --background-modifier-selected: rgba(232, 108, 52, 0.17);
+  --background-accent: #4a3f3a;
+  --text-normal: #e9e3df;
+  --text-muted: #9c918b;
+  --header-primary: #f8f4f1;
+  --header-secondary: #c2b6af;
+  --interactive-normal: #b3a8a1;
+  --interactive-hover: #ece6e2;
+  --interactive-active: #ffffff;
+  --interactive-muted: #574d48;
+  --text-link: #ffa36b;
+  --brand-experiment: #e0622b;
+  --status-danger: #f04a4a;
+  --status-positive: #3fbf7a;
+  --status-warning: #f2b136;
+  --rustcord-radius: 8;
+}

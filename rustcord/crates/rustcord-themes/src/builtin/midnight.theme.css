@@ -1,0 +1,31 @@
+/**
+ * @name Midnight OLED
+ * @author Rustcord
+ * @version 1.0.0
+ * @description True black for OLED panels, violet accent.
+ */
+:root {
+  --background-primary: #000000;
+  --background-secondary: #050505;
+  --background-secondary-alt: #080808;
+  --background-tertiary: #000000;
+  --background-floating: #0a0a0a;
+  --channeltextarea-background: #111111;
+  --background-modifier-hover: rgba(255, 255, 255, 0.05);
+  --background-modifier-selected: rgba(160, 120, 255, 0.18);
+  --background-accent: #262626;
+  --text-normal: #e6e6e6;
+  --text-muted: #7a7a7a;
+  --header-primary: #ffffff;
+  --header-secondary: #b0b0b0;
+  --interactive-normal: #9a9a9a;
+  --interactive-hover: #e0e0e0;
+  --interactive-active: #ffffff;
+  --interactive-muted: #3a3a3a;
+  --text-link: #a78bfa;
+  --brand-experiment: #8b5cf6;
+  --status-danger: #ff4d6d;
+  --status-positive: #2ee59d;
+  --status-warning: #ffd166;
+  --rustcord-radius: 4;
+}
