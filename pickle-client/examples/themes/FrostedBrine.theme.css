@@ -1,0 +1,47 @@
+/**
+ * @name Frosted Brine
+ * @author Pickle
+ * @version 1.0.0
+ * @description Example theme in BetterDiscord format. It uses the same CSS variables web-client themes use (old and new names), so it works in Pickle, BetterDiscord and Vencord alike.
+ */
+
+/* Remote stylesheets are fetched and their variables applied too:
+@import url("https://example.com/my-theme/base.css");
+*/
+
+:root {
+  --saturation-factor: 1;
+  --frost-hue: 168;
+
+  /* Optional full-window background (panels below use translucent fills):
+  --background-image: url("https://example.com/wallpaper.jpg");
+  */
+}
+
+.theme-dark {
+  --background-primary: hsl(var(--frost-hue) calc(var(--saturation-factor) * 18%) 11%);
+  --background-secondary: hsl(var(--frost-hue) calc(var(--saturation-factor) * 20%) 8%);
+  --background-secondary-alt: hsl(var(--frost-hue) 22% 6.5%);
+  --background-tertiary: hsl(var(--frost-hue) 25% 5%);
+  --background-floating: hsl(var(--frost-hue) 25% 4%);
+  --channeltextarea-background: hsl(var(--frost-hue) 16% 15%);
+  --background-modifier-hover: hsla(var(--frost-hue), 60%, 60%, 0.07);
+  --background-modifier-selected: hsla(var(--frost-hue), 60%, 60%, 0.15);
+
+  --text-normal: hsl(var(--frost-hue) 12% 88%);
+  --text-muted: hsl(var(--frost-hue) 8% 58%);
+  --header-primary: #ffffff;
+  --header-secondary: hsl(var(--frost-hue) 10% 75%);
+  --interactive-normal: hsl(var(--frost-hue) 10% 70%);
+  --interactive-hover: hsl(var(--frost-hue) 15% 90%);
+  --interactive-active: #ffffff;
+
+  --brand-experiment: color-mix(in srgb, #3ee6c4 85%, white);
+  --text-link: #7cd7ff;
+  --status-danger: #ff5c7a;
+  --status-positive: #3ee6a0;
+  --status-warning: #ffcc66;
+
+  /* Pickle-only extras */
+  --pickle-radius: 10;
+}

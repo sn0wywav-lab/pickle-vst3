@@ -2,6 +2,10 @@
 
 A sleek, pickle-themed audio effect plugin that adds unique character to your audio tracks.
 
+## Also in this repository: Pickle client
+
+[`pickle-client/`](pickle-client/) is a fast native Rust client for Discord with unlocked voice quality (up to 600 kb/s stereo Opus, selectable 8–48 kHz, no audio filters), uncapped camera quality, and support for BetterDiscord/Vencord themes and plugins. See [`pickle-client/README.md`](pickle-client/README.md).
+
 ## 🎨 UI Design
 
 The PICKLE plugin features a stunning modern blurred glass interface:

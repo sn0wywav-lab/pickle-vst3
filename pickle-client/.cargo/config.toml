@@ -1,0 +1,3 @@
+[env]
+# The bundled libopus uses an old cmake_minimum_required; CMake 4 refuses it without this.
+CMAKE_POLICY_VERSION_MINIMUM = "3.5"

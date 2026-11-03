@@ -1,0 +1,40 @@
+[package]
+name = "pickle-app"
+description = "Pickle: a fast native client for Discord, written in Rust"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+
+[[bin]]
+name = "pickle"
+path = "src/main.rs"
+
+[features]
+default = ["camera"]
+camera = ["pickle-voice/camera"]
+
+[dependencies]
+pickle-discord.workspace = true
+pickle-voice = { workspace = true, features = ["video"] }
+pickle-themes.workspace = true
+pickle-plugins.workspace = true
+
+tokio.workspace = true
+serde.workspace = true
+serde_json.workspace = true
+tracing.workspace = true
+parking_lot.workspace = true
+crossbeam-channel.workspace = true
+reqwest.workspace = true
+
+# OpenGL renderer: smaller and starts faster than wgpu for a 2D UI.
+eframe = { version = "0.37", default-features = false, features = ["glow", "default_fonts", "system_fonts", "clipboard", "links", "wayland", "x11"] }
+# Bundled monochrome emoji/icon fonts so icons render on every OS.
+egui = { version = "0.37", default-features = false, features = ["monochrome_emoji_fonts"] }
+# Same winit eframe uses; enables its default platform backends.
+winit = "0.30.13"
+image = { version = "0.25", default-features = false, features = ["png", "jpeg", "webp", "gif"] }
+directories = "6"
+chrono = { version = "0.4", default-features = false, features = ["clock", "std"] }
+tracing-subscriber = { version = "0.3", features = ["env-filter"] }
+mimalloc = { version = "0.1", default-features = false }

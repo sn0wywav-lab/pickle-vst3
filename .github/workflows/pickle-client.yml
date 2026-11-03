@@ -1,0 +1,84 @@
+name: Pickle client (Rust)
+
+on:
+  push:
+    paths:
+      - "pickle-client/**"
+      - ".github/workflows/pickle-client.yml"
+  pull_request:
+    paths:
+      - "pickle-client/**"
+      - ".github/workflows/pickle-client.yml"
+  workflow_dispatch:
+
+env:
+  CARGO_TERM_COLOR: always
+  CMAKE_POLICY_VERSION_MINIMUM: "3.5"
+
+defaults:
+  run:
+    working-directory: pickle-client
+
+jobs:
+  test:
+    name: Test + clippy (Linux)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          components: clippy
+      - uses: Swatinem/rust-cache@v2
+        with:
+          workspaces: pickle-client
+      - name: System libraries
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends cmake clang pkg-config nasm \
+            libasound2-dev libv4l-dev libxkbcommon-dev libwayland-dev libgl-dev
+      - run: cargo clippy --workspace --all-targets -- -D warnings
+      - run: cargo test --workspace
+
+  build:
+    name: Release build (${{ matrix.os }})
+    needs: test
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: windows-latest
+            bin: pickle.exe
+          - os: ubuntu-latest
+            bin: pickle
+          - os: macos-latest
+            bin: pickle
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+      - uses: Swatinem/rust-cache@v2
+        with:
+          workspaces: pickle-client
+      - name: System libraries (Linux)
+        if: runner.os == 'Linux'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends cmake clang pkg-config nasm \
+            libasound2-dev libv4l-dev libxkbcommon-dev libwayland-dev libgl-dev
+      - name: CMake (macOS)
+        if: runner.os == 'macOS'
+        run: brew list cmake >/dev/null 2>&1 || brew install cmake
+      - run: cargo build --release -p pickle-app
+      - name: Package
+        shell: bash
+        run: |
+          mkdir -p dist/themes dist/plugins
+          cp target/release/${{ matrix.bin }} dist/
+          cp README.md dist/
+          cp examples/themes/* dist/themes/
+          cp examples/plugins/* dist/plugins/
+      - uses: actions/upload-artifact@v4
+        with:
+          name: pickle-${{ runner.os }}
+          path: pickle-client/dist/
+          retention-days: 30
